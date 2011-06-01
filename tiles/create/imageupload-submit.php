@@ -2,6 +2,8 @@
 
 if(!isset($_FILES["file"])){
 	echo 'file not set';
+} else if(!isset($_POST["form_name"])){
+	echo 'no name is set.';
 } else if ($_FILES["file"]["error"] > 0) {
 	echo "Error: " . $_FILES["file"]["error"] . "<br />";
 }
@@ -14,6 +16,7 @@ else {
 	
 	$imgData =addslashes (file_get_contents($_FILES['file']['tmp_name']));
 
+	$name = $_POST["form_name"];
 	
 	mysql_connect("localhost", "root", "admin") OR DIE (mysql_error());
 	mysql_select_db ("site") OR DIE ("Unable to select db".mysql_error());
@@ -22,7 +25,7 @@ else {
 	$sql = "INSERT INTO image
 			(name ,data, width, height, file_type)
 			VALUES
-			('NAMES!!', '{$imgData}', '{$width}', '${height}', '${type}')";
+			('{$name}', '{$imgData}', '{$width}', '${height}', '${type}')";
 
 	// insert the image
 	if(!mysql_query($sql)) {
